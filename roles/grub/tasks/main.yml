@@ -1,0 +1,43 @@
+- name: Copy files
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ item.dest }}"
+    src: "{{ item.src }}"
+    group: root
+    owner: root
+    mode: "644"
+  loop:
+    - dest: /etc/pacman.d/hooks/grub.hook
+      src: grub.hook
+
+- name: Install package
+  become: true
+  ansible.builtin.package:
+    name: grub
+
+- name: Configure settings
+  become: true
+  community.general.ini_file:
+    path: /etc/default/grub
+    option: "GRUB_{{ item.key }}"
+    value: >-
+      {% if item.value is not string and item.value is iterable -%}
+        "{{ item.value | join(' ') }}"
+      {%- else -%}
+        {{ item.value | string }}
+      {%- endif %}
+    create: false
+    ignore_spaces: true
+    no_extra_spaces: true
+  loop: "{{ settings | dict2items }}"
+  vars:
+    settings:
+      DEFAULT: 2
+      TIMEOUT: 2
+      CMDLINE_LINUX_DEFAULT:
+        - cryptdevice=UUID=1dd4e472-7277-4dcd-8d5e-b2661e299769:cryptroot
+        - mem_sleep_default=deep
+      ENABLE_CRYPTODISK: y
+      DISABLE_SUBMENU: y
+  notify:
+    - Generate config file
