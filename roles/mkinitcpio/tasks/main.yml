@@ -1,0 +1,34 @@
+- name: Configure settings
+  become: true
+  community.general.ini_file:
+    path: /etc/mkinitcpio.conf
+    option: "{{ item.key }}"
+    value: "({{ item.value | join(' ') }})"
+    create: false
+    ignore_spaces: true
+    modify_inactive_option: false
+    no_extra_spaces: true
+  loop: "{{ settings | dict2items }}"
+  vars:
+    settings:
+      MODULES:
+        - i915
+        - intel_agp
+      FILES:
+        - /crypto_keyfile.bin
+      HOOKS:
+        - base
+        - udev
+        - consolefont
+        - autodetect
+        - microcode
+        - modconf
+        - kms
+        - keyboard
+        - keymap
+        - block
+        - encrypt
+        - filesystems
+        - fsck
+  notify:
+    - Generate images
