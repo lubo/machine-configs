@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: 0 7 * * *
+    commit-message:
+      prefix: CI
+    cooldown:
+      default-days: 2
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: 0 7 * * *
+    cooldown:
+      default-days: 2
+    allow:
+      - dependency-type: all
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-minor
+          - version-update:semver-patch
+    versioning-strategy: increase
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: cron
+      cronjob: 0 7 * * *
+    cooldown:
+      default-days: 2
+    groups:
+      all-packages:
+        patterns:
+          - "*"
+    allow:
+      - dependency-type: all
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+    # Makes it possible to have another config. for the same dir.
+    # https://github.com/dependabot/dependabot-core/issues/1778#issuecomment-1988140219
+    target-branch: master
+    versioning-strategy: increase
