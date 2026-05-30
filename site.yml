@@ -1,0 +1,4 @@
+- name: Configure the-k
+  hosts: localhost
+  connection: local
+  roles: []
