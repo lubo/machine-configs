@@ -1,0 +1,36 @@
+- name: Create directories
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    group: root
+    owner: root
+    mode: "755"
+    state: directory
+  loop:
+    - /etc/pacman.d/hooks
+
+- name: Configure makepkg settings
+  become: true
+  community.general.ini_file:
+    path: /etc/makepkg.conf
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    create: false
+    ignore_spaces: true
+    no_extra_spaces: true
+  loop: "{{ settings | dict2items }}"
+  vars:
+    settings:
+      PKGEXT: "'.pkg.tar'"
+
+- name: Enable mirrors
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.d/mirrorlist
+    regexp: "^#?(Server = {{ item | regex_escape }})$"
+    line: '\1'
+    backrefs: true
+  loop:
+    - https://fastly.mirror.pkgbuild.com/$repo/os/$arch
+    - https://geo.mirror.pkgbuild.com/$repo/os/$arch
+    - https://ftp.sh.cvut.cz/arch/$repo/os/$arch
