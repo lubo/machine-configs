@@ -9,20 +9,6 @@
   loop:
     - /etc/pacman.d/hooks
 
-- name: Configure makepkg settings
-  become: true
-  community.general.ini_file:
-    path: /etc/makepkg.conf
-    option: "{{ item.key }}"
-    value: "{{ item.value }}"
-    create: false
-    ignore_spaces: true
-    no_extra_spaces: true
-  loop: "{{ settings | dict2items }}"
-  vars:
-    settings:
-      PKGEXT: "'.pkg.tar'"
-
 - name: Enable mirrors
   become: true
   ansible.builtin.lineinfile:
