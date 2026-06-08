@@ -3,7 +3,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 ansible = "^13.7.0"
-python = "^3.14"
+python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
 ansible-lint = "^26.4.0"

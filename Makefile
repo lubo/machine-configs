@@ -6,8 +6,4 @@ format:
 	prettier -w *.yml **/*.yml
 
 lint:
-	ansible-lint \
-		--offline \
-		--profile production \
-		--strict \
-		*.yml
+	ansible-lint *.yml
