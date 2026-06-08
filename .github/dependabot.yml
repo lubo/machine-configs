@@ -31,6 +31,8 @@ updates:
     schedule:
       interval: cron
       cronjob: 0 7 * * *
+    commit-message:
+      prefix: ""
     cooldown:
       default-days: 2
     groups:
