@@ -40,6 +40,7 @@
 - name: Run tasks with variables
   vars:
     settings:
+      AlertExceedsMax: "yes"
       ConcurrentDatabaseReload: "no" # Prevents 2x memory usage.
       ExtendedDetectionInfo: "yes"
       # 2x `find / -printf '%d\n' | sort -nr | head -n 1`.
