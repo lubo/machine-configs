@@ -42,7 +42,8 @@
     settings:
       ConcurrentDatabaseReload: "no" # Prevents 2x memory usage.
       ExtendedDetectionInfo: "yes"
-      MaxDirectoryRecursion: 0
+      # 2x `find / -printf '%d\n' | sort -nr | head -n 1`.
+      MaxDirectoryRecursion: 64
       OnAccessExcludeUname: clamav
       OnAccessExtraScanning: "yes"
       OnAccessMaxFileSize: 100M # Default of MaxFileSize.
