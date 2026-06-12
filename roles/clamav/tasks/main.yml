@@ -45,6 +45,7 @@
       ExtendedDetectionInfo: "yes"
       # 2x `find / -printf '%d\n' | sort -nr | head -n 1`.
       MaxDirectoryRecursion: 64
+      MaxRecursion: 17 # The default.
       MaxThreads: "{{ ansible_facts.processor_nproc }}"
       OnAccessExcludeUname: clamav
       OnAccessExtraScanning: "yes"
@@ -87,6 +88,8 @@
         settings_: |
           {{ settings | combine(
             {
+              'MaxQueue': 1017 - (settings.MaxRecursion * settings.MaxThreads)
+                + settings.MaxThreads,
               'OnAccessMaxThreads': settings.MaxThreads,
             }
           ) }}
