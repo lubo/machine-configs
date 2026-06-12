@@ -1,0 +1,15 @@
+- name: Restart clamav-clamonacc.service
+  become: true
+  ansible.builtin.systemd_service:
+    name: clamav-clamonacc.service
+    daemon_reload: true
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Restart clamav-daemon.service
+  become: true
+  ansible.builtin.systemd_service:
+    name: clamav-daemon.service
+    daemon_reload: true
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"

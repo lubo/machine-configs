@@ -1,0 +1,115 @@
+- name: Install package
+  become: true
+  ansible.builtin.package:
+    name: clamav
+
+- name: Create directories
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    group: root
+    owner: root
+    mode: "755"
+    state: directory
+  loop:
+    - /etc/systemd/system/clamav-clamonacc.service.d
+    - /usr/local/lib/clamav
+
+- name: Read clamav-clamonacc.service contents
+  ansible.builtin.slurp:
+    armor: false
+    src: /usr/lib/systemd/system/clamav-clamonacc.service
+  register: clamav_clamonacc_service_file
+
+- name: Create clamav-clamonacc.service override
+  become: true
+  ansible.builtin.template:
+    src: clamav-clamonacc.service.j2
+    dest: /etc/systemd/system/clamav-clamonacc.service.d/override.conf
+    group: root
+    owner: root
+    mode: "644"
+  vars:
+    exec_start: "{{
+      clamav_clamonacc_service_file.content
+      | regex_search('^ExecStart=.+$', multiline=True)
+      }}"
+  notify:
+    - Restart clamav-clamonacc.service
+
+- name: Run tasks with variables
+  vars:
+    settings:
+      ConcurrentDatabaseReload: "no" # Prevents 2x memory usage.
+      ExtendedDetectionInfo: "yes"
+      MaxDirectoryRecursion: 0
+      OnAccessExcludeUname: clamav
+      OnAccessExtraScanning: "yes"
+      OnAccessMaxFileSize: 100M # Default of MaxFileSize.
+      OnAccessPrevention: "no" # Performance and anti-lockup.
+      OnAccessRetryAttempts: 3
+      # Trailing / is required so that TemporaryDirectory and OnAccessIncludePath
+      # don't match. Otherwise, TemporaryDirectory won't be watched.
+      # `OnAccessExcludeUname clamav` prevents scanning loops.
+      # https://github.com/Cisco-Talos/clamav/blob/e2fad31672ba98daf8adb7d653fca6264a9ec130/clamonacc/fanotif/fanotif.c#L119
+      # https://github.com/Cisco-Talos/clamav/blob/e2fad31672ba98daf8adb7d653fca6264a9ec130/clamonacc/inotif/inotif.c#L469
+      TemporaryDirectory: /var/tmp/ # /tmp uses tmpfs.
+      VirusEvent: /usr/local/lib/clamav/virus-event
+  block:
+    - name: Create files
+      become: true
+      ansible.builtin.copy:
+        dest: "{{ item.dest }}"
+        src: "{{ item.src }}"
+        group: root
+        owner: root
+        mode: "{{ item.mode }}"
+      loop:
+        - dest: /etc/sudoers.d/clamav
+          src: sudoers
+          mode: "600"
+        - dest: "{{ settings.VirusEvent }}"
+          src: virus-event
+          mode: "755"
+
+    - name: Configure key-value settings
+      become: true
+      ansible.builtin.lineinfile:
+        path: /etc/clamav/clamd.conf
+        regexp: "^#?({{ item.key }}) .+$"
+        line: '\1 {{ item.value }}'
+        backrefs: true
+      loop: "{{ settings | dict2items }}"
+      notify:
+        # Will restart clamav-clamonacc.service too.
+        - Restart clamav-daemon.service
+  rescue:
+    - name: Fail on error
+      ansible.builtin.fail:
+
+- name: Configure multi-value settings
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/clamav/clamd.conf
+    block: "{{ lookup('ansible.builtin.file', 'clamd.conf') }}"
+    marker: "#{mark}"
+    marker_begin: "{{ marker }}"
+    marker_end: "/{{ marker }}"
+    prepend_newline: true
+  vars:
+    marker: cdist:__block/etc/clamav/clamd.conf
+  notify:
+    # Will restart clamav-clamonacc.service too.
+    - Restart clamav-daemon.service
+
+- name: Enable and start service
+  become: true
+  ansible.builtin.service:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  ignore_errors: "{{ ansible_check_mode }}"
+  loop:
+    - clamav-freshclam.service
+    - clamav-daemon.service
+    - clamav-clamonacc.service
