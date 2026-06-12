@@ -82,7 +82,14 @@
         regexp: "^#?({{ item.key }}) .+$"
         line: '\1 {{ item.value }}'
         backrefs: true
-      loop: "{{ settings | dict2items }}"
+      loop: "{{ settings_ | dict2items }}"
+      vars:
+        settings_: |
+          {{ settings | combine(
+            {
+              'OnAccessMaxThreads': settings.MaxThreads,
+            }
+          ) }}
       notify:
         # Will restart clamav-clamonacc.service too.
         - Restart clamav-daemon.service
