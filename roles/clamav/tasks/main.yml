@@ -45,11 +45,13 @@
       ExtendedDetectionInfo: "yes"
       # 2x `find / -printf '%d\n' | sort -nr | head -n 1`.
       MaxDirectoryRecursion: 64
+      MaxFiles: 15000
+      MaxFileSize: 150M
       MaxRecursion: 17 # The default.
+      MaxScanTime: 240000
       MaxThreads: "{{ ansible_facts.processor_nproc }}"
       OnAccessExcludeUname: clamav
       OnAccessExtraScanning: "yes"
-      OnAccessMaxFileSize: 100M # Default of MaxFileSize.
       OnAccessPrevention: "no" # Performance and anti-lockup.
       OnAccessRetryAttempts: 3
       # Trailing / is required so that TemporaryDirectory and OnAccessIncludePath
@@ -90,6 +92,7 @@
             {
               'MaxQueue': 1017 - (settings.MaxRecursion * settings.MaxThreads)
                 + settings.MaxThreads,
+              'OnAccessMaxFileSize': settings.MaxFileSize,
               'OnAccessMaxThreads': settings.MaxThreads,
             }
           ) }}
