@@ -48,7 +48,7 @@
       MaxFiles: 15000
       MaxFileSize: 150M
       MaxRecursion: 17 # The default.
-      MaxScanTime: 240000
+      MaxScanTime: 300000
       MaxThreads: "{{ ansible_facts.processor_nproc }}"
       OnAccessExcludeUname: clamav
       OnAccessExtraScanning: "yes"
