@@ -1,0 +1,8 @@
+- name: Copy common files
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ home }}/"
+    src: common/
+    group: "{{ user }}"
+    owner: "{{ user }}"
+    mode: preserve

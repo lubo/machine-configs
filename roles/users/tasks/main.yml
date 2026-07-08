@@ -1,0 +1,9 @@
+- name: Configure user
+  ansible.builtin.include_tasks:
+    file: user.yml
+  loop:
+    - lubo
+  loop_control:
+    loop_var: user
+  vars:
+    home: /home/{{ user }}
