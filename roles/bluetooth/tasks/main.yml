@@ -1,0 +1,25 @@
+- name: Install package
+  become: true
+  ansible.builtin.package:
+    name: bluez
+
+- name: Disable automatic enablement
+  become: true
+  community.general.ini_file:
+    path: /etc/bluetooth/main.conf
+    section: Policy
+    option: AutoEnable
+    value: "false"
+    create: false
+    ignore_spaces: true
+    no_extra_spaces: true
+  notify:
+    - Restart bluetooth.service
+
+- name: Enable and start service
+  become: true
+  ansible.builtin.service:
+    name: bluetooth.service
+    enabled: true
+    state: started
+  ignore_errors: "{{ ansible_check_mode }}"

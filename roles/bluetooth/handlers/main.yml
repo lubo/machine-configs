@@ -1,0 +1,7 @@
+- name: Restart bluetooth.service
+  become: true
+  ansible.builtin.systemd_service:
+    name: bluetooth.service
+    daemon_reload: true
+    state: restarted
+  ignore_errors: "{{ ansible_check_mode }}"
