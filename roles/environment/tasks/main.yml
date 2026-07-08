@@ -1,0 +1,8 @@
+- name: Copy environment variables file
+  become: true
+  ansible.builtin.copy:
+    src: local.sh
+    dest: /etc/profile.d/
+    owner: root
+    group: root
+    mode: preserve
