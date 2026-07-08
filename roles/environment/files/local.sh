@@ -17,6 +17,8 @@ export PIPENV_HIDE_EMOJIS="yes"
 # https://github.com/pypa/pipenv/issues/3860
 export PIPENV_PYUP_API_KEY=""
 
+export PLAYWRIGHT_NODEJS_PATH=node
+
 # Poetry hangs during dependency installation if the keyring is not unlocked.
 export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring
 
