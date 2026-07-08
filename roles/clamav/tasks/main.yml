@@ -45,7 +45,7 @@
       ExtendedDetectionInfo: "yes"
       # 2x `find / -printf '%d\n' | sort -nr | head -n 1`.
       MaxDirectoryRecursion: 64
-      MaxFiles: 15000
+      MaxFiles: 20000
       MaxFileSize: 150M
       MaxRecursion: 17 # The default.
       MaxScanTime: 300000
