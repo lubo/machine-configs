@@ -13,6 +13,7 @@
     state: directory
   loop:
     - /etc/systemd/system/clamav-clamonacc.service.d
+    - /root/quarantine
     - /usr/local/lib/clamav
 
 - name: Read clamav-clamonacc.service contents
