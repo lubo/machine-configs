@@ -15,6 +15,7 @@ zstyle ':completion:*' menu select
 setopt completealiases
 
 setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
 
 setopt PROMPT_SP
 
