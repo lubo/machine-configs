@@ -49,5 +49,5 @@ updates:
           - version-update:semver-major
     # Makes it possible to have another config. for the same dir.
     # https://github.com/dependabot/dependabot-core/issues/1778#issuecomment-1988140219
-    target-branch: master
+    target-branch: main
     versioning-strategy: increase
