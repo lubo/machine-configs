@@ -9,4 +9,5 @@
     - clamav
     - bluetooth
     - environment
+    - packages
     - users
