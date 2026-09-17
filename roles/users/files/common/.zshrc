@@ -66,7 +66,7 @@ precmd () {
     print -Pn "\e]0;%n@%M:%~\a"
 }
 
-alias check-local-package-versions="pkgctl version check ~/{.cache/yay,projects/archlinux}/*"
+alias check-local-package-versions="pkgctl version check ~/{.cache/yay,projects/archlinux}/*/"
 
 alias find-all-writable-dirs="find / -type d -writable -prune ! -path '/proc/*' 2>/dev/null"
 
