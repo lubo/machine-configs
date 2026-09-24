@@ -4,3 +4,18 @@
     name: "{{ item }}"
   loop:
     - zypper # `needs-restarting` script
+
+- name: Check AUR package is installed
+  ansible.builtin.package:
+    name: "{{ item }}"
+  check_mode: true
+  loop:
+    - brave-bin
+    - cronet
+    - disig-web-signer
+    - eidklient-native
+    - gnome-shell-extension-clipboard-indicator
+    - google-chrome
+    - needrestart
+    - visual-studio-code-bin
+    - yay
