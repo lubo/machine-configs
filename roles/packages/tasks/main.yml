@@ -2,8 +2,7 @@
   become: true
   ansible.builtin.package:
     name: "{{ item }}"
-  loop:
-    - zypper # `needs-restarting` script
+  loop: []
 
 - name: Check AUR package is installed
   ansible.builtin.package:
