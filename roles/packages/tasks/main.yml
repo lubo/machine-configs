@@ -10,7 +10,6 @@
   check_mode: true
   loop:
     - brave-bin
-    - cronet
     - disig-web-signer
     - eidklient-native
     - gnome-shell-extension-clipboard-indicator
