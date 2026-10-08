@@ -3,7 +3,7 @@
 all: format lint
 
 format:
-	prettier -w *.yml **/*.yml
+	prettier -w .
 
 lint:
 	ansible-lint *.yml
