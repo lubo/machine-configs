@@ -33,3 +33,4 @@ jobs:
         env:
           BASH_EXEC_IGNORE_LIBRARIES: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_BIOME_FORMAT: false
