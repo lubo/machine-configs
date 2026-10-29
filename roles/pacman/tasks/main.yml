@@ -20,3 +20,18 @@
     - https://fastly.mirror.pkgbuild.com/$repo/os/$arch
     - https://geo.mirror.pkgbuild.com/$repo/os/$arch
     - https://ftp.sh.cvut.cz/arch/$repo/os/$arch
+
+- name: Configure makepkg
+  become: true
+  community.general.ini_file:
+    path: /etc/makepkg.conf
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    create: false
+    ignore_spaces: true
+    no_extra_spaces: true
+  loop: "{{ settings | dict2items }}"
+  vars:
+    settings:
+      # Necessary for `commitpkg`.
+      PACKAGER: '"Ľubomír Kučera <lubomir.kucera.jr@gmail.com>"'
