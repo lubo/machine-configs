@@ -1,0 +1,23 @@
+- name: Create WireGuard configuration file
+  become: true
+  ansible.builtin.template:
+    src: warp.conf.j2
+    dest: /etc/wireguard/warp.conf
+    group: root
+    owner: root
+    mode: "600"
+  no_log: true
+  vars:
+    private_key: >-
+      {{
+        lookup(
+          'pipe',
+          'pass private/1.1.1.1/{}/wgcf-account.toml'.format(
+            ansible_facts['hostname'],
+          ),
+        )
+        | ansible.builtin.regex_search(
+          "(?<=^private_key = ').*(?='$)",
+          multiline=True,
+        )
+      }}
