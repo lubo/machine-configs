@@ -76,3 +76,5 @@ alias lucky-wheel-timer="sleep 4 && echo -ne '\007'"
 alias ps-no-kt="LIBPROC_HIDE_KERNEL=1 ps"
 
 alias systemd-cgtop-all="systemd-cgtop --depth 4294967295 --recursive true"
+
+eval "$(direnv hook zsh)"

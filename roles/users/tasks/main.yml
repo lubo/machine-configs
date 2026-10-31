@@ -1,3 +1,10 @@
+- name: Install dependencies
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+  loop:
+    - direnv
+
 - name: Configure user
   ansible.builtin.include_tasks:
     file: user.yml
