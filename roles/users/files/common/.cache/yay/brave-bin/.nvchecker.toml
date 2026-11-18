@@ -1,0 +1,6 @@
+# https://github.com/brave/brave-browser/issues/59870
+
+[brave-bin]
+source = "regex"
+url = "https://versions.brave.com/latest/release-linux-x64.version"
+regex = '.+'
