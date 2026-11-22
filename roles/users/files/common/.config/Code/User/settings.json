@@ -1,0 +1,50 @@
+{
+  "[dockercompose]": {
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "ansible.lightspeed.enabled": false,
+  "chat.agent.sandbox.enabled": "on",
+  "chat.agent.sandbox.network.allowNetwork": false,
+  "editor.minimap.enabled": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.exclude": {
+    "**/.DS_Store": false,
+    "**/.git": false,
+    "**/.hg": false,
+    "**/.svn": false,
+    "**/CVS": false,
+    "**/Thumbs.db": false
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.openRepositoryInParentFolders": "always",
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.path": ["mypy"],
+  "python.analysis.autoImportCompletions": true,
+  "python.languageServer": "Default",
+  "redhat.telemetry.enabled": false,
+  "ruff.path": ["ruff"],
+  "rust-analyzer.server.path": "rust-analyzer",
+  "security.workspace.trust.enabled": false,
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "Light Modern",
+  "workbench.startupEditor": "none",
+  "yaml.disableSchemaDetection": [
+    "**/.github/workflows/*.yml",
+    "**/.github/workflows/*.yaml",
+    "**/.gitea/workflows/*.yml",
+    "**/.gitea/workflows/*.yaml",
+    "**/.forgejo/workflows/*.yml",
+    "**/.forgejo/workflows/*.yaml"
+  ]
+}
